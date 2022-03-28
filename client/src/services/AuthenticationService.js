@@ -5,4 +5,3 @@ export default {
     return Api().post('register', credentials)
   }
 }
-
