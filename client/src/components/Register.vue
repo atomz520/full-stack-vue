@@ -8,14 +8,16 @@
       v-model="email"
       placeholder="Email"
     />
-    <br />
+    <br>
     <input
       type="password"
       name="password"
       v-model="password"
       placeholder="Password"
     />
-
+    <br>
+    <div class="error" v-html="error"/>
+    <br>
     <button
       @click="register"
     >Register</button>
@@ -29,7 +31,8 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
   watch: {
@@ -39,12 +42,16 @@ export default {
   },
   methods: {
     async register () {
-      const response = await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      })
-      console.log(`Register button clicked. ${this.email}, ${this.password}`)
-      console.log(response.data)
+      try {
+        const response = await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        })
+        console.log(`Register button clicked. ${this.email}, ${this.password}`)
+        console.log(response.data)
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   },
   mounted () {
@@ -57,6 +64,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.error {
+  color: red;
+}
 h1, h2 {
   font-weight: normal;
 }
