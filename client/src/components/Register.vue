@@ -1,26 +1,56 @@
 <template>
   <div class="hello">
     <h1>Register</h1>
+    <v-row>
+      <v-col
+        cols="12"
+        sm="4"
+      />
+      <v-col
+        cols="12"
+        sm="4"
+      >
+        <v-text-field
+          name="email"
+          v-model="email"
+          placeholder="Email"
+        />
+        <br>
+        <v-text-field
+          name="password"
+          v-model="password"
+          placeholder="Password"
+        />
+        <br>
+        <div class="error" v-html="error"/>
+        <br>
+        <v-btn
+          @click="register"
+        >
+          Register
+        </v-btn>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="4"
+      />
+    </v-row>
+    <v-snackbar
+      v-model="snackbar"
+    >
+      {{ snackbarText }}
 
-    <input
-      type="email"
-      name="email"
-      v-model="email"
-      placeholder="Email"
-    />
-    <br>
-    <input
-      type="password"
-      name="password"
-      v-model="password"
-      placeholder="Password"
-    />
-    <br>
-    <div class="error" v-html="error"/>
-    <br>
-    <button
-      @click="register"
-    >Register</button>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -32,12 +62,14 @@ export default {
     return {
       email: '',
       password: '',
-      error: null
+      error: null,
+      snackbar: true,
+      snackbarText: `I'm the snackbar`
     }
   },
   watch: {
     email (value) {
-      console.log(`Email has changed ${value}`)
+      // console.log(`Email has changed ${value}`)
     }
   },
   methods: {
@@ -56,7 +88,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.email = `Hello World`
+      // this.email = `Hello World`
     }, 1000)
   }
 }
