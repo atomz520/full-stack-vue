@@ -1,13 +1,15 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <task-list />
+    <task-list
+      :taskList="taskList"
+    />
     <v-calendar
       ref="calendar"
       v-model="value"
       color="blue"
       @click="checkDay"
-      @click:date="dayClicked"
+      @click:date="getTasksByDate"
       :weekdays="weekday"
       :type="type"
       :events="events"
@@ -19,6 +21,7 @@
 
 <script>
 import { format } from 'date-fns'
+import CalendarService from '@/services/CalendarService'
 export default {
   name: 'HelloWorld',
   data () {
@@ -40,18 +43,42 @@ export default {
       events: [],
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
-      currentDate: '1234'
+      currentDate: '1234',
+      taskList: {
+        selectedDate: ''
+      }
     }
   },
   mounted () {
     this.currentDate = format(new Date(), 'd MMM y')
+    this.taskList.selectedDate = format(new Date(), 'd MMM y')
+    this.getTasksByDate(new Date())
   },
   methods: {
     checkDay (event) {
       console.log(event)
     },
-    dayClicked ({date}) {
-      this.currentDate = format(new Date(date), 'd MMM y')
+    // dayClicked ({date}) {
+    //   this.currentDate = format(new Date(date), 'd MMM y')
+    //   this.taskList.selectedDate = date
+    //   this.getTasksByDate()
+    //   console.log(`day clicked`)
+    // },
+    async getTasksByDate ({date}) {
+      try {
+        const response = await CalendarService.getTasksByDate({
+          date: format(new Date(date), 'yyyy-MM-dd') + ' 00:00:00.000 +00:00'
+        })
+        console.log(format(new Date(date), 'yyyy-MM-dd'))
+        console.log(`Fetching tasks from this date. ${this.date}`)
+        // console.log(response.data)
+        this.taskList.content = response.data
+        console.log(this.taskList)
+        this.currentDate = format(new Date(date), 'd MMM y')
+        this.taskList.selectedDate = date
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   },
   components: {

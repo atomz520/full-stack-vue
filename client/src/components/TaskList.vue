@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <v-card
     class="mx-auto"
@@ -9,8 +10,7 @@
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-      <v-toolbar-title><h1>{{ currentDate }}</h1></v-toolbar-title>
-
+      <v-toolbar-title><h1>{{ taskList.selectedDate }}</h1></v-toolbar-title>
       <v-spacer></v-spacer>
 
       <!-- <v-btn icon>
@@ -28,22 +28,22 @@
         active-class="pink--text"
         multiple
       >
-        <template v-for="(item, index) in items">
-          <v-list-item :key="item.title">
+        <template v-for="(task, index) in taskList.content">
+          <v-list-item :key="task.id">
             <template v-slot:default="{ active }">
               <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
+                <v-list-item-title v-text="task.message"></v-list-item-title>
 
                 <v-list-item-subtitle
                   class="text--primary"
-                  v-text="item.headline"
+                  v-text="task.message"
                 ></v-list-item-subtitle>
 
-                <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+                <v-list-item-subtitle v-text="task.score"></v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                <v-list-item-action-text v-text="task.createdAt"></v-list-item-action-text>
 
                 <v-icon
                   v-if="!active"
@@ -61,9 +61,8 @@
               </v-list-item-action>
             </template>
           </v-list-item>
-
           <v-divider
-            v-if="index < items.length - 1"
+            v-if="index < task.length - 1"
             :key="index"
           ></v-divider>
         </template>
@@ -73,8 +72,9 @@
 </template>
 
 <script>
+// import { format } from 'date-fns'
 export default {
-  props: ['currentDate'],
+  props: ['taskList'],
   data: () => ({
     selected: [],
     items: [
@@ -91,10 +91,17 @@ export default {
         subtitle: `Wish I could come, but I'm out of town this weekend.`,
         title: 'me, Scrott, Jennifer'
       }
-    ]
+    ],
+    selectedDate: ''
   }),
   mounted () {
-    console.log(this.currentDate)
+    console.log(this.taskList)
+    // this.selectedDate = format(new Date(this.taskList.selectedDate), 'd MMM y')
+  },
+  watch: {
+    taskList: function () {
+      console.log(`taskList updated`)
+    }
   }
 }
 </script>
