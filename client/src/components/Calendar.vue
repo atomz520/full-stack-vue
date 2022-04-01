@@ -1,21 +1,38 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <task-list
-      :taskList="taskList"
-    />
-    <v-calendar
-      ref="calendar"
-      v-model="value"
-      color="blue"
-      @click="checkDay"
-      @click:date="getTasksByDate"
-      :weekdays="weekday"
-      :type="type"
-      :events="events"
-      :event-overlap-mode="mode"
-      :event-overlap-threshold="30"
-    ></v-calendar>
+    <v-row>
+      <v-col
+        cols="12"
+        sm="4"
+      >
+        <task-list
+          :taskList="taskList"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        sm="8"
+      >
+        <v-calendar
+          ref="calendar"
+          v-model="value"
+          color="blue"
+          @click="checkDay"
+          @click:date="getTasksByDate"
+          :weekdays="weekday"
+          :type="type"
+          :events="events"
+          :event-overlap-mode="mode"
+          :event-overlap-threshold="30"
+        ></v-calendar>
+        <v-btn
+          @click="addTask"
+        >
+          Add Task
+        </v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -23,10 +40,10 @@
 import { format } from 'date-fns'
 import CalendarService from '@/services/CalendarService'
 export default {
-  name: 'HelloWorld',
+  name: 'Calendar',
   data () {
     return {
-      msg: 'This is where the calendar view will reside.',
+      msg: 'Calendar',
       drawer: null,
       type: 'month',
       types: ['month', 'week', 'day', '4day'],
@@ -64,6 +81,15 @@ export default {
     //   this.getTasksByDate()
     //   console.log(`day clicked`)
     // },
+    async addTask () {
+      const date = Math.floor(Math.random() * 30) + 1
+      const response = await CalendarService.addTask({
+        date: '2022-04-' + date + ' 00:00:00.000 +00:00',
+        message: 'Some Data',
+        score: 3
+      })
+      console.log(response)
+    },
     async getTasksByDate ({date}) {
       try {
         const response = await CalendarService.getTasksByDate({

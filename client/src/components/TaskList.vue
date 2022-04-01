@@ -25,7 +25,8 @@
     <v-list two-line>
       <v-list-item-group
         v-model="selected"
-        active-class="pink--text"
+        active-class="cyan--text"
+        class="text-sm-left"
         multiple
       >
         <template v-for="(task, index) in taskList.content">
