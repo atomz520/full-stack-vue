@@ -26,6 +26,50 @@
           :event-overlap-mode="mode"
           :event-overlap-threshold="30"
         ></v-calendar>
+        <v-form>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-menu
+                  v-model="datePickerMenu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="newTask.date"
+                      label="Picker without buttons"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="newTask.date"
+                    @input="datePickerMenu = false"
+                  ></v-date-picker>
+                </v-menu>
+                <v-text-field
+                  v-model="newTask.message"
+                  label="Message"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-model="newTask.score"
+                  label="Score"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
         <v-btn
           @click="addTask"
         >
@@ -63,6 +107,12 @@ export default {
       currentDate: '1234',
       taskList: {
         selectedDate: ''
+      },
+      datePickerMenu: false,
+      newTask: {
+        date: '',
+        message: '',
+        score: ''
       }
     }
   },
@@ -82,18 +132,21 @@ export default {
     //   console.log(`day clicked`)
     // },
     async addTask () {
-      const date = Math.floor(Math.random() * 30) + 1
+      // const date = Math.floor(Math.random() * 30) + 1
       const response = await CalendarService.addTask({
-        date: '2022-04-' + date + ' 00:00:00.000 +00:00',
-        message: 'Some Data',
-        score: 3
+        date: this.newTask.date + ' 00:00:00.000 +00:00',
+        message: this.newTask.message,
+        score: this.newTask.score
       })
       console.log(response)
     },
     async getTasksByDate ({date}) {
+      if (!date) {
+        date = format(new Date(), 'yyyy-MM-dd')
+      }
       try {
         const response = await CalendarService.getTasksByDate({
-          date: format(new Date(date), 'yyyy-MM-dd') + ' 00:00:00.000 +00:00'
+          date: date + ' 00:00:00.000 +00:00'
         })
         console.log(format(new Date(date), 'yyyy-MM-dd'))
         console.log(`Fetching tasks from this date. ${this.date}`)
