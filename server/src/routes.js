@@ -8,7 +8,15 @@ module.exports = (app) => {
     AuthenticationControllerPolicy.register,
     AuthenticationController.register)
 
-  app.post('/addtask',
+    app.post('/addhabit',
+    TaskController.addHabit
+  )
+
+  app.post('/gethabitsbymonth',
+    TaskController.getHabitsByMonth
+  )
+
+    app.post('/addtask',
     TaskController.addTask
   )
 

@@ -33,14 +33,14 @@
           <v-list-item :key="task.id">
             <template v-slot:default="{ active }">
               <v-list-item-content>
-                <v-list-item-title v-text="task.message"></v-list-item-title>
+                <v-list-item-title v-text="task.name"></v-list-item-title>
 
                 <v-list-item-subtitle
                   class="text--primary"
-                  v-text="task.message"
+                  v-text="task.name"
                 ></v-list-item-subtitle>
 
-                <v-list-item-subtitle v-text="task.score"></v-list-item-subtitle>
+                <v-list-item-subtitle v-text="task.name"></v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-action>

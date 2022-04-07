@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Register from '@/components/Register'
 import Calendar from '@/components/Calendar'
+import Sandbox from '@/components/Sandbox'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/calendar',
       name: 'calendar',
       component: Calendar
+    },
+    {
+      path: '/sandbox',
+      name: 'sandbox',
+      component: Sandbox
     }
   ]
 })
