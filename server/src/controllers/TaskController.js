@@ -5,11 +5,40 @@ module.exports = {
   async addHabit (req, res) {
     try {
       const habit = await Habit.create(req.body)
-      console.log (req.body)
+      console.log(habit.dataValues.id)
+      const daysInMonth = new Date(parseInt(req.body.month.slice(0,4)), parseInt(req.body.month.slice(5,7)), 0).getDate()
+      for (let i = 1; i <= daysInMonth; i++) {
+        Task.create({
+          "habit_id": habit.dataValues.id, 
+          "date": req.body.month + "-" + (i < 10 ? "0" : "") + i,
+          "message": "Auto task",
+          "score": ""
+        })
+      }
       res.send(habit.toJSON())
     } catch (err) {
       res.status(400).send({
         error: `A new habit could not be created.`,
+        err: err
+      })
+    }
+  },
+  async deleteHabit (req, res) {
+    try {
+      const habit = await Habit.destroy({
+        where: {
+          id: req.body.habit_id
+        }
+      })
+      const task = await Task.destroy({
+        where: {
+          habit_id: req.body.habit_id
+        }
+      })
+      res.send({habit, task})
+    } catch (err) {
+      res.status(400).send({
+        error: `The habit could not be deleted.`,
         err: err
       })
     }

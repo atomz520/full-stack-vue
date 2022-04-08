@@ -105,48 +105,28 @@ export default {
     this.$refs.calendar.checkChange()
     this.taskList.selectedDate = format(new Date(), 'd MMM y')
     this.getHabitsByMonth(this.$refs.calendar.renderProps.start.date)
-    // console.log(`The value: ` + this.value)
-    // console.log(this.$refs.calendar.renderProps.start.date)
-    // console.log(`What im looking for: ` + this.$refs.calendar.renderProps)
-    // console.log(this.$refs.calendar.next())
-    // console.log(format(this.value, 'MMM'))
   },
   methods: {
     checkDay (event) {
       console.log(`This is the event: ` + event)
     },
     async getHabitsByMonth (date) {
-      // const date = $refs.calendar.renderProps.start.date
-      // const date = format(new Date(), 'yyyy-MM-dd')
-      console.log(date)
+      console.log(`getHabitsByMonth: ` + date)
       try {
         const response = await CalendarService.getHabitsByMonth({
           month: date.slice(0, 7)
         })
-        // console.log(response.data)
         this.taskList.content = response.data
         console.log(this.taskList)
         this.taskList.selectedDate = date
       } catch (error) {
-        this.error = error.response.data.error
+        console.log(error)
+        // this.error = error.response.data.error
       }
     },
-    async getTasksByDate ({date, start}) {
+    async getTasksByDate ({date}) {
       console.log(`Selected ` + date)
       this.getHabitsByMonth(date)
-      // try {
-      //   const response = await CalendarService.getHabitsByMonth({
-      //     month: date.slice(0, 7)
-      //   })
-      //   // console.log(format(new Date(date), 'yyyy-MM-dd'))
-      //   console.log(`Fetching tasks from this date. ${date}`)
-      //   console.log(response.data)
-      //   this.taskList.content = response.data
-      //   console.log(this.taskList)
-      //   this.taskList.selectedDate = date
-      // } catch (error) {
-      //   this.error = error.response.data.error
-      // }
     },
     getEventColor (event) {
       return event.color
@@ -164,8 +144,9 @@ export default {
       const events = []
       const min = new Date(`${start.date}T00:00:00`)
       const max = new Date(`${end.date}T23:59:59`)
+
       this.events = events
-    },
+    }
   },
   components: {
     'task-list': require('@/components/TaskList.vue').default,
