@@ -5,10 +5,9 @@ module.exports = {
   async addHabit (req, res) {
     try {
       const habit = await Habit.create(req.body)
-      console.log(habit.dataValues.id)
       const daysInMonth = new Date(parseInt(req.body.month.slice(0,4)), parseInt(req.body.month.slice(5,7)), 0).getDate()
       for (let i = 1; i <= daysInMonth; i++) {
-        Task.create({
+        await Task.create({
           "habit_id": habit.dataValues.id, 
           "date": req.body.month + "-" + (i < 10 ? "0" : "") + i,
           "message": "Auto task",
