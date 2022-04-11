@@ -10,7 +10,7 @@ module.exports = {
         await Task.create({
           "habit_id": habit.dataValues.id, 
           "date": req.body.month + "-" + (i < 10 ? "0" : "") + i,
-          "message": "Auto task",
+          "message": "",
           "score": ""
         })
       }
@@ -50,6 +50,14 @@ module.exports = {
           month: req.body.month
         }
       })
+      for (const habit in habits) {
+        console.log(habits[habit])
+        habits[habit].dataValues.tasks = await Task.findAll({
+          where: {
+            habit_id: habits[habit].id
+          }
+        })
+      }
       console.log (habits)
       res.send(JSON.stringify(habits, null, 2))
     } catch (err) {

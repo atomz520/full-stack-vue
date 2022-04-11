@@ -5,6 +5,18 @@
       app
     >
       <!--  -->
+      <div>
+        <v-btn>
+          <router-link to="register">
+            Register
+          </router-link>
+        </v-btn>
+        <v-btn>
+          <router-link to="calendar">
+            Calendar
+          </router-link>
+        </v-btn>
+      </div>
     </v-navigation-drawer>
 
     <v-app-bar app>

@@ -4,7 +4,7 @@
     <v-row>
       <v-col
         cols="12"
-        sm="4"
+        sm="8"
       >
         <add-habit-form/>
         <task-list
@@ -13,7 +13,7 @@
       </v-col>
       <v-col
         cols="12"
-        sm="8"
+        sm="4"
       >
         <v-sheet height="64">
           <v-toolbar
@@ -103,8 +103,11 @@ export default {
   },
   mounted () {
     this.$refs.calendar.checkChange()
-    this.taskList.selectedDate = format(new Date(), 'd MMM y')
-    this.getHabitsByMonth(this.$refs.calendar.renderProps.start.date)
+    console.log(format(new Date(), 'y-MM-d'))
+    // this.taskList.selectedDate = format(new Date(), 'd MMM y')
+    this.taskList.selectedDate = format(new Date(), 'y-MM-d')
+    //this.getHabitsByMonth(this.$refs.calendar.renderProps.start.date)
+    this.getHabitsByMonth(format(new Date(), 'y-MM-d'))
   },
   methods: {
     checkDay (event) {

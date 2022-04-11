@@ -16,17 +16,18 @@
         class="text-sm-left"
         multiple
       >
-        <template v-for="(task, index) in taskList.content">
-          <v-list-item :key="task.id">
+        <template v-for="(habit, index) in taskList.content">
+          <v-list-item :key="habit.id">
             <template>
               <v-list-item-content>
-                <v-list-item-title v-text="task.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="task.name"></v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-list-item-action>
+                <v-list-item-title v-text="habit.name"></v-list-item-title>
+                <v-list-item-subtitle
+                  v-text="habit.tasks[parseInt(taskList.selectedDate.slice(8, 10)) - 1].message"
+                ></v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
                 <v-text-field
-                  v-model="task.name"
+                  v-model="habit.tasks[parseInt(taskList.selectedDate.slice(8, 10)) - 1].score"
                   label="Score"
                   required
                 ></v-text-field>
@@ -34,7 +35,7 @@
             </template>
           </v-list-item>
           <v-divider
-            v-if="index < task.length - 1"
+            v-if="index < habit.length - 1"
             :key="index"
           ></v-divider>
         </template>
@@ -45,6 +46,7 @@
 
 <script>
 export default {
+/* eslint-disable */
   props: ['taskList'],
   data: () => ({
   }),
