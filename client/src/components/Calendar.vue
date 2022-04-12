@@ -64,14 +64,13 @@
           @click:date="getTasksByDate"
           @change="updateRange"
         ></v-calendar>
-        <add-task-form />
+        <!-- <add-task-form />-->
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-/* eslint-disable */
 import { format } from 'date-fns'
 import CalendarService from '@/services/CalendarService'
 export default {
@@ -106,7 +105,7 @@ export default {
     console.log(format(new Date(), 'y-MM-d'))
     // this.taskList.selectedDate = format(new Date(), 'd MMM y')
     this.taskList.selectedDate = format(new Date(), 'y-MM-d')
-    //this.getHabitsByMonth(this.$refs.calendar.renderProps.start.date)
+    // this.getHabitsByMonth(this.$refs.calendar.renderProps.start.date)
     this.getHabitsByMonth(format(new Date(), 'y-MM-d'))
   },
   methods: {
@@ -144,11 +143,11 @@ export default {
       this.$refs.calendar.next()
     },
     updateRange ({ start, end }) {
-      const events = []
-      const min = new Date(`${start.date}T00:00:00`)
-      const max = new Date(`${end.date}T23:59:59`)
-
-      this.events = events
+      // const events = []
+      // let min = new Date(`${start.date}T00:00:00`)
+      // let max = new Date(`${end.date}T23:59:59`)
+      // min = max - max + min
+      // this.events = events
     }
   },
   components: {

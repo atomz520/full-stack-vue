@@ -11,6 +11,7 @@
             Register
           </router-link>
         </v-btn>
+        <br />
         <v-btn>
           <router-link to="calendar">
             Calendar

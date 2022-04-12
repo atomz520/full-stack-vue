@@ -79,6 +79,23 @@ module.exports = {
       })
     }
   },
+  async updateTask (req, res) {
+    try {
+      const task = await Task.update(
+        req.body, {
+        where: {
+          id: req.body.id
+        }
+      })
+      console.log (req.body)
+      res.send({task})
+    } catch (err) {
+      res.status(400).send({
+        error: `The task could not be updated.`,
+        err: err
+      })
+    }
+  },
   async getAllTasks (req, res) {
     try {
       const tasks = await Task.findAll()

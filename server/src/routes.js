@@ -24,6 +24,10 @@ module.exports = (app) => {
     TaskController.addTask
   )
 
+  app.post('/updatetask',
+    TaskController.updateTask
+  )
+
   app.get('/getalltasks',
     TaskController.getAllTasks
   )

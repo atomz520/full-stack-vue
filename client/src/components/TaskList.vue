@@ -10,6 +10,10 @@
       <v-toolbar-title><h1>{{ taskList.selectedDate }}</h1></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
+    <div id="debounce-search-demo">
+      <input v-model="searchQuery" placeholder="Type something">
+      <strong>{{ searchIndicator }}</strong>
+    </div>
 
     <v-list two-line>
       <v-list-item-group
@@ -30,6 +34,7 @@
                   v-model="habit.tasks[parseInt(taskList.selectedDate.slice(8, 10)) - 1].score"
                   label="Score"
                   required
+                  outlined
                 ></v-text-field>
               </v-list-item-action>
             </template>
@@ -45,12 +50,40 @@
 </template>
 
 <script>
+const _ = require('lodash');
 export default {
 /* eslint-disable */
   props: ['taskList'],
   data: () => ({
+    searchQuery: '',
+    searchQueryIsDirty: false,
+    isCalculating: false
   }),
   mounted () {
+  },
+  computed: {
+    searchIndicator: function () {
+      if (this.isCalculating) {
+        return '⟳ Fetching new results'
+      } else if (this.searchQueryIsDirty) {
+        return '... Typing'
+      } else {
+        return '✓ Done'
+      }
+    }
+  },
+  watch: {
+    searchQuery: function () {
+      this.expensiveOperation()
+    }
+  },
+  methods: {
+    updateTask () {
+
+    },
+    expensiveOperation: _.debounce(function () {
+      this.isCalculating = true
+    }, 3000)
   }
 }
 </script>
